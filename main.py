@@ -1,23 +1,20 @@
-def main():
-    filename = "books/frankenstein.txt"
-    with open(filename) as file:
+from stats import get_num_words, get_num_letters, get_sorted_letter_dict
+
+
+def get_book_text(filepath):
+    with open(filepath) as file:
         content = file.read()
-        content = content.lower().split()
-        word_count = len(content)
-        counter = {}
-        for words in content:
-            for char in words:
-                if char not in counter and char.isalpha():
-                    counter[char] = 1
-                elif char.isalpha():
-                    counter[char] += 1
-        counter = dict(
-            sorted(counter.items(), key=lambda item: item[1], reverse=True))
-        print(f"--- Begin report of {filename} ---")
-        print(f"{word_count} words found in the document")
-        for key, value in counter.items():
-            print(f"The {key} character was found {value} times")
-        print("--- End report ---")
+        print(f"""============ BOOKBOT ============
+Analyzing book found at {filepath}
+----------- Word Count ----------
+Found {get_num_words(content)} total words
+--------- Character Count -------""")
+        for item in get_sorted_letter_dict(get_num_letters(content)):
+            print(f"{item['char']}: {item['num']}")
+
+
+def main():
+    get_book_text(filepath="books/frankenstein.txt")
 
 
 main()
